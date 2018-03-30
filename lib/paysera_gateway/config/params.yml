@@ -1,0 +1,28 @@
+:required:
+  - :projectid
+  - :orderid
+  - :accepturl
+  - :cancelurl
+  - :callbackurl
+  - :sign_password
+:additional:
+  - :lang
+  - :amount
+  - :currency
+  - :payment
+  - :country
+  - :paytext
+  - :p_firstname
+  - :p_lastname
+  - :p_email
+  - :p_street
+  - :p_city
+  - :p_state
+  - :p_zip
+  - :p_countrycode
+  - :only_payments
+  - :disallow_payments
+  - :time_limit
+  - :personcode
+  - :version
+  - :test
