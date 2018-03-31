@@ -26,11 +26,11 @@ module PayseraGateway
     end
 
     context 'validation' do
-      it 'raises ValidationError if params are missing required fields' do
-        expect { described_class.new({}) }.to raise_error do |error|
-          expect(error).to be_a(PayseraGateway::Errors::ValidationError)
-          expect(error.message).to eq('Required parameters are missing.')
-        end
+      it 'adds error if params are missing required fields' do
+        req = Request.new({})
+        req.valid?
+        expect(req.errors.messages)
+          .to include(projectid: ["Param \"projectid\" is required."])
       end
     end
 

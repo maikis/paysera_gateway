@@ -1,9 +1,14 @@
 module PayseraGateway
+  # Request constructor class.
   class Request
+    include ActiveModel::Validations
+
     attr_reader :params, :sign_password
 
+    validate :required_params_presence
+
     def initialize(params)
-      @params = params_validator.validate(params)
+      @params = params
       @sign_password = params.delete(:sign_password)
     end
 
@@ -12,10 +17,6 @@ module PayseraGateway
     end
 
     private
-
-    def params_validator
-      PayseraGateway::ParamsValidator
-    end
 
     def sign
       Digest::MD5.hexdigest(base64_encoded_data + sign_password)
@@ -29,5 +30,18 @@ module PayseraGateway
     def encoded_params(params_to_encode = params)
       URI.encode_www_form(params_to_encode)
     end
+
+    def required_params_presence
+      config.required_params.each do |required_param|
+        unless params.keys.include?(required_param)
+          errors.add(required_param, "Param \"#{required_param}\" is required.")
+        end
+      end
+    end
+
+    def config
+      PayseraGateway::Configuration
+    end
   end
 end
+
