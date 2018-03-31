@@ -41,7 +41,7 @@ module PayseraGateway
       end
 
       def raise_error(message, details)
-        raise ValidationError.new(message, details)
+        raise Errors::ValidationError.new(message, details)
       end
     end
   end
