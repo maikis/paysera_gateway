@@ -1,11 +1,6 @@
-require 'net/http'
-
 module PayseraGateway
-  # Request constructor class.
   class Request
     attr_reader :params, :sign_password
-
-    PAYSERA_URI = 'https://www.paysera.com/pay/'.freeze
 
     def initialize(params)
       @params = params_validator.validate(params)
