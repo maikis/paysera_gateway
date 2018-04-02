@@ -14,7 +14,11 @@ module PayseraGateway
     end
 
     def build
-      { data: base64_encoded_data, sign: sign }
+      paysera_url = 'https://www.paysera.com/pay/'
+      query = URI.encode_www_form(data: base64_encoded_data, sign: sign)
+      uri = URI(paysera_url)
+      uri.query = query
+      uri
     end
 
     private

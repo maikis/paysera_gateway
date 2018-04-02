@@ -71,14 +71,20 @@ module PayseraGateway
     end
 
     describe '#build' do
-      it 'generates valid paysera request data' do
-        request = described_class.new(params.dup)
+      let(:query) do
         sign_password = params.delete(:sign_password)
         encoded_params = URI.encode_www_form(params)
         data = Base64.strict_encode64(encoded_params)
         data = data.tr('/', '_').tr('+', '-')
         sign = Digest::MD5.hexdigest(data + sign_password.to_s)
-        expect(request.build).to eq(data: data, sign: sign)
+        URI.encode_www_form(data: data, sign: sign)
+      end
+
+      it 'generates valid paysera request data' do
+        request = described_class.new(params.dup)
+        uri = URI('https://www.paysera.com/pay/')
+        uri.query = query
+        expect(request.build).to eq(uri)
       end
     end
   end
