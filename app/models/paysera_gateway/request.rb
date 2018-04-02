@@ -8,6 +8,7 @@ module PayseraGateway
     validate :required_params_presence, :unknown_params
 
     def initialize(params)
+      params = params.symbolize_keys
       @params = params
       @sign_password = params.delete(:sign_password)
     end

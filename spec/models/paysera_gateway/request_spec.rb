@@ -41,7 +41,7 @@ module PayseraGateway
       end
 
       it 'does not fail if params are passed in with string keys' do
-        params = { "a": 1 }
+        params = { "a" => 1 }
         allow_any_instance_of(Request).to receive(:config).and_return(config)
         request = Request.new(params)
         request.valid?
