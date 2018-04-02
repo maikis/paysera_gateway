@@ -5,7 +5,7 @@ module PayseraGateway
 
     attr_reader :params, :sign_password
 
-    validate :required_params_presence
+    validate :required_params_presence, :unknown_params
 
     def initialize(params)
       @params = params
@@ -35,6 +35,15 @@ module PayseraGateway
       config.required_params.each do |required_param|
         unless params.keys.include?(required_param)
           errors.add(required_param, "Param \"#{required_param}\" is required.")
+        end
+      end
+    end
+
+    def unknown_params
+      known_params = config.required_params + config.additional_params
+      params.keys.each do |param|
+        unless known_params.include?(param)
+          errors.add(param, "Unknown param \"#{param}\".")
         end
       end
     end

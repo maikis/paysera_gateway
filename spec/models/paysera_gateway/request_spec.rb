@@ -32,6 +32,22 @@ module PayseraGateway
         expect(req.errors.messages)
           .to include(projectid: ["Param \"projectid\" is required."])
       end
+
+      it 'adds error if params includes unknown field' do
+        required_params = [:a]
+        additional_params =  [:b]
+        params = { a: 1, b: 2, c: 3 }
+        config = class_double(
+          'PayseraGateway::Configuration',
+          required_params: [:a],
+          additional_params: [:b]
+        )
+        allow_any_instance_of(Request).to receive(:config).and_return(config)
+        request = Request.new(params)
+        request.valid?
+        expect(request.errors.messages)
+          .to include(c: ["Unknown param \"c\"."])
+      end
     end
 
     describe '#build' do
