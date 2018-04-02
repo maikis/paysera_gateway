@@ -2,19 +2,15 @@ require 'rails_helper'
 
 module PayseraGateway
   RSpec.describe Request, type: :model do
-    let(:params_config) do
-      config_file = File.expand_path(
-        'app/models/paysera_gateway/config/params.yml'
+    let(:config) do
+      class_double(
+        'PayseraGateway::Configuration',
+        required_params: [:a],
+        additional_params: [:b]
       )
-      YAML.load_file(config_file)
     end
 
-    let(:params) do
-      req = params_config[:required]
-      params = {}
-      req.each { |param| params[param] = param.to_s }
-      params
-    end
+    let(:params) { { a: 1, b: 2, sign_password: 3 } }
 
     it 'has params' do
       expect(described_class.new(params).params).to eq(params)
@@ -22,26 +18,20 @@ module PayseraGateway
 
     it 'extracts sign_password from params on initialization' do
       request = described_class.new(params.dup)
-      expect(request.sign_password).to eq(params[:sign_password])
+      expect(request.sign_password).to eq(params[:sign_password].to_s)
     end
 
     context 'validation' do
       it 'adds error if params are missing required fields' do
-        req = Request.new({})
-        req.valid?
-        expect(req.errors.messages)
-          .to include(projectid: ["Param \"projectid\" is required."])
+        allow_any_instance_of(Request).to receive(:config).and_return(config)
+        request = Request.new({})
+        request.valid?
+        expect(request.errors.messages)
+          .to eq(a: ["Param \"a\" is required."])
       end
 
       it 'adds error if params includes unknown field' do
-        required_params = [:a]
-        additional_params =  [:b]
-        params = { a: 1, b: 2, c: 3 }
-        config = class_double(
-          'PayseraGateway::Configuration',
-          required_params: [:a],
-          additional_params: [:b]
-        )
+        params = { a: 1, c: 3 }
         allow_any_instance_of(Request).to receive(:config).and_return(config)
         request = Request.new(params)
         request.valid?
@@ -57,7 +47,7 @@ module PayseraGateway
         encoded_params = URI.encode_www_form(params)
         data = Base64.strict_encode64(encoded_params)
         data = data.tr('/', '_').tr('+', '-')
-        sign = Digest::MD5.hexdigest(data + sign_password)
+        sign = Digest::MD5.hexdigest(data + sign_password.to_s)
         expect(request.build).to eq(data: data, sign: sign)
       end
     end

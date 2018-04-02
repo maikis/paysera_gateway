@@ -9,7 +9,7 @@ module PayseraGateway
 
     def initialize(params)
       @params = params
-      @sign_password = params.delete(:sign_password)
+      @sign_password = params.delete(:sign_password).to_s
     end
 
     def build
