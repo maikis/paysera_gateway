@@ -9,7 +9,7 @@ module PayseraGateway
 
     def initialize(params)
       @params = params
-      @sign_password = params.delete(:sign_password).to_s
+      @sign_password = params.delete(:sign_password)
     end
 
     def build
@@ -19,7 +19,7 @@ module PayseraGateway
     private
 
     def sign
-      Digest::MD5.hexdigest(base64_encoded_data + sign_password)
+      Digest::MD5.hexdigest(base64_encoded_data + sign_password.to_s)
     end
 
     def base64_encoded_data
@@ -33,7 +33,8 @@ module PayseraGateway
 
     def required_params_presence
       config.required_params.each do |required_param|
-        unless params.keys.include?(required_param)
+        all_params = params.keys + [:sign_password]
+        unless all_params.include?(required_param)
           errors.add(required_param, "Param \"#{required_param}\" is required.")
         end
       end
