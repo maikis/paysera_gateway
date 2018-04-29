@@ -4,11 +4,17 @@ Ruby app developers to integrate `Paysera` payments in easy and quick way. The g
 a substitute for [Paysera Payment Gateway](https://developers.paysera.com/en/payments/current),
 precisely [WebToPay](https://bitbucket.org/paysera/libwebtopay/raw/default/WebToPay.php) library.
 
-**Please note that this library is not yet finished and tested with production **
+**Please note that this library is not yet finished and tested in the production **
 
 ## DISCLAIMER
 
-Use this software at your own risk.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## Installation
 Add this line to your application's Gemfile:
