@@ -7,5 +7,9 @@ module PayseraGateway
       req = Request.new(payment_data)
       redirect_to req.build.to_s if req.valid?
     end
+
+    def methods
+      render json: {}
+    end
   end
 end
