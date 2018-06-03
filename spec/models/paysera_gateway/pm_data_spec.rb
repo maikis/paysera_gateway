@@ -26,10 +26,10 @@ module PayseraGateway
     it 'returns a hash with basic payment method data from paysera service' do
       stub_payment_methods_empty
       expect(PMData.fetch({projectid: 12345, language: 'lt'}))
-        .to eq(payment_types_document: { project_id: '12345',
-                                         currency: 'EUR',
-                                         amount: '',
-                                         language: 'lt'})
+        .to eq('payment_types_document' => { 'project_id' => '12345',
+                                             'currency'   => 'EUR',
+                                             'amount'     => '',
+                                             'language'   => 'lt'})
     end
 
     it 'returns full hash with payments if amount is given' do
@@ -37,8 +37,8 @@ module PayseraGateway
       expect(PMData.fetch({ projectid: 12345,
                             currency: 'eur',
                             amount: 1000,
-                            language: 'lt' })[:payment_types_document])
-        .to include(:country)
+                            language: 'lt' })['payment_types_document'])
+        .to include('country')
     end
   end
 end

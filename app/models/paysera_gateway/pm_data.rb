@@ -6,21 +6,27 @@ module PayseraGateway
     class << self
       def fetch(options)
         unless options[:projectid]
-          raise ParamError.new('Required param "projectid" missing.')
+          raise ParamError, 'Required param "projectid" missing.'
         end
 
-        projectid = options[:projectid]
-        currency = options[:currency]
-        amnt = options[:amount]
-        lang = options[:language]
+        @projectid = options[:projectid]
+        @currency  = options[:currency]
+        @amount    = options[:amount]
+        @language  = options[:language]
 
-        url = "https://www.paysera.com/new/api/paymentMethods/#{projectid}/"\
-              "currency:#{currency}/amount:#{amnt}/language:#{lang}"
-        uri = URI(url)
+        paysera_payment_methods
+      end
 
-        response = Net::HTTP.get(uri)
-        resp_hsh = Hash.from_xml(response)
-        resp_hsh.deep_symbolize_keys
+      private
+
+      def paysera_uri
+        URI("https://www.paysera.com/new/api/paymentMethods/#{@projectid}/"\
+            "currency:#{@currency}/amount:#{@amount}/language:#{@language}")
+      end
+
+      def paysera_payment_methods
+        response = Net::HTTP.get(paysera_uri)
+        Hash.from_xml(response)
       end
     end
   end
