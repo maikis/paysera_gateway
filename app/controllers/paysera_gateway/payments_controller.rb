@@ -9,7 +9,19 @@ module PayseraGateway
     end
 
     def methods
-      render json: {}
+      pm = PMData.fetch(pm_params)
+      render json: pm
+    end
+
+    private
+
+    def pm_params
+      {
+        projectid: params[:projectid],
+        currency:  params[:currency],
+        amount:    params[:amount],
+        language:  params[:language]
+      }
     end
   end
 end
