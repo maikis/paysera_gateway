@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'byebug', '~> 10.0'
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rubocop', '~> 0.53'
+  s.add_development_dependency 'webmock', '~> 3.4'
 end
